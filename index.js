@@ -132,6 +132,24 @@ const algs = {
             yield [i, rects.length - i - 1];
         }
     },
+    "bogo": function* bogo() {
+        let done = false;
+
+        while (!done) {
+            // check if we're already done
+            done = true;
+            for (let i = 0; i < rects.length - 1; i++) {
+                if (rects[i].value > rects[i + 1].value) {
+                    done = false;
+                    break;
+                }
+            }
+
+            if (!done) {
+                yield* algs.shuffle();
+            }
+        }
+    },
     "bubble": function* bubbleSort() {
         for (let i = 0; i < rects.length; i++) {
             for (let j = 0; j < rects.length - i - 1; j++) {
