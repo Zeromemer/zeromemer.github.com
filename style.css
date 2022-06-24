@@ -1,0 +1,22 @@
+#main {
+	display: flex;
+	flex-direction: row;
+	height: 77vh;
+	width: 100%;
+	padding-bottom: 15px;
+	flex-grow: 1;
+	animation: none;
+}
+
+.rect {
+	box-sizing: border-box;
+	width: auto;
+	flex: 1;
+	margin-top: auto;
+	background-color: #00c3ff;
+	border-left: 1px solid #ffffff;
+}
+
+.swap-rect {
+	background: red;
+}
