@@ -85,6 +85,10 @@ function runSwapper(generator) {
             return;
         }
 
+        if (toSwap.value[0] === toSwap.value[1]) {
+            console.log('same');
+        }
+
         // set both rectangles to have the "swap-rect" class
         rects[toSwap.value[0]]?.element.classList.add('swap-rect');
         rects[toSwap.value[1]]?.element.classList.add('swap-rect');
@@ -113,16 +117,12 @@ const algs = {
 
 
     "shuffle": function* shuffle() {
-        let currentIndex = 0, randomIndex;
+        for (let i = 0; i < rects.length; i++) {
+            // chose a random element rand,
+            // so that rand is in the set [i, rectts.length)
+            const rand = Math.floor(Math.random() * (rects.length - i)) + i;
 
-        // While there remain elements to shuffle.
-        while (currentIndex < rects.length) {
-            // Pick a remaining element.
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            
-            // And swap it with the current element.
-            yield [currentIndex, randomIndex];
-            currentIndex++;
+            yield [i, rand];
         }
     },
     "invert": function* invert() {
