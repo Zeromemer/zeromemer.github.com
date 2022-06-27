@@ -204,7 +204,10 @@ const algs = {
                     j--;
                 }
                 if (i <= j) {
-                    yield [i, j];
+                    if (i !== j) {
+                        yield [i, j];
+                    }
+
                     i++;
                     j--;
                 }
