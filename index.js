@@ -82,6 +82,8 @@ function runSwapper(generator) {
         const toSwap = generator.next();
         if (toSwap.done) {
             console.log('done');
+            end = performance.now();
+            console.log(`Time: ${end - start}`);
             return;
         }
 
@@ -97,7 +99,10 @@ function runSwapper(generator) {
     }, TIMEOUT);
 }
 
+let start = null;
+let end = null;
 sortButton.addEventListener('click', () => {
+    start = performance.now();
     const alg = algs[document.getElementById('alg').value];
     if (!alg) {
         throw new Error('Invalid algorithm');
