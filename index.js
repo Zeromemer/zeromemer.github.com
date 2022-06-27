@@ -83,7 +83,8 @@ function runSwapper(generator) {
         if (toSwap.done) {
             console.log('done');
             end = performance.now();
-            console.log(`Time: ${end - start}`);
+            const date = new Date();
+            console.log(`${date.toLocaleString()} ${end - start}`);
             return;
         }
 
