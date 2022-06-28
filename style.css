@@ -1,3 +1,7 @@
+body {
+	width: 99%;
+}
+
 #main {
 	display: flex;
 	flex-direction: row;
@@ -14,6 +18,9 @@
 	flex: 1;
 	margin-top: auto;
 	background-color: #00c3ff;
+}
+
+.main-mod .rect {
 	border-left: 1px solid #ffffff;
 }
 

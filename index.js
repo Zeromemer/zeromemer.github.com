@@ -3,6 +3,7 @@ const generateButton = document.getElementById('generate');
 const countElement = document.getElementById('count');
 const sortButton = document.getElementById('sort');
 const stopButton = document.getElementById('stop-sort');
+const modeButton = document.getElementById('switch-mode');
 // const allowSoundButton = document.getElementById('allow-sound');
 
 let rects = []; // this is the array that will hold the rectangles
@@ -22,6 +23,9 @@ function generate(count) {
         main.appendChild(rect);
     }
 }
+
+// swaps between the two modes
+modeButton.addEventListener('click', () => main.classList.contains('main-mod') ? main.classList.remove('main-mod') : main.classList.add('main-mod'));
 
 generateButton.addEventListener('click', () => {
     // delete all the rectangles in main
