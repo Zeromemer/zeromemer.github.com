@@ -14,7 +14,7 @@ function generate(count) {
     sortState.timeout = null;
 
     for (let i = 1; i <= count; i++) {
-        const rect = document.createElement('div');;
+        const rect = document.createElement('div');
         rect.classList.add('rect');
         rect.style.height = `${i / count * 100}%`;
     
