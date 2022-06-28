@@ -10,8 +10,8 @@ let rects = []; // this is the array that will hold the rectangles
 const TIMEOUT = 1; // this is the time in milliseconds between each swap
 
 function generate(count) {
-    clearTimeout(timeout);
-    timeout = null;
+    clearTimeout(sortState.timeout);
+    sortState.timeout = null;
 
     for (let i = 1; i <= count; i++) {
         const rect = document.createElement('div');
@@ -57,23 +57,28 @@ async function swap(id1, id2) {
     swapNodes(rects[id1].element, rects[id2].element);
 }
 
-let timeout = null;
+const sortState = {
+    running: false,
+    timeout: null,
+    startTime: null,
+    endTime: null,
+}
 
 stopButton.addEventListener('click', () => {
-    clearTimeout(timeout);
-    timeout = null;
+    clearTimeout(sortState.timeout);
+    sortState.timeout = null;
     rects.forEach(rect => {
         rect.element.classList.remove('swap-rect');
     });
 });
 
 function runSwapper(generator) {
-    if (timeout) {
-        clearTimeout(timeout);
-        timeout = null;
+    if (sortState.timeout) {
+        clearTimeout(sortState.timeout);
+        sortState.timeout = null;
     }
 
-    timeout = setTimeout(() => {
+    sortState.timeout = setTimeout(() => {
         // remove all the "swap-rect" classes from all the rectangles
         rects.forEach(rect => {
             rect.element.classList.remove('swap-rect');
@@ -81,10 +86,9 @@ function runSwapper(generator) {
         
         const toSwap = generator.next();
         if (toSwap.done) {
-            console.log('done');
             end = performance.now();
             const date = new Date();
-            console.log(`${date.toLocaleString()} ${end - start}`);
+            console.log(`${date.toLocaleString()}: ${end - sortState.startTime}`);
             return;
         }
 
@@ -100,10 +104,8 @@ function runSwapper(generator) {
     }, TIMEOUT);
 }
 
-let start = null;
-let end = null;
 sortButton.addEventListener('click', () => {
-    start = performance.now();
+    sortState.startTime = performance.now();
     const alg = algs[document.getElementById('alg').value];
     if (!alg) {
         throw new Error('Invalid algorithm');
