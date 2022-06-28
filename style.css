@@ -10,7 +10,6 @@
 }
 
 .rect {
-	box-sizing: border-box;
 	width: auto;
 	flex: 1;
 	margin-top: auto;
