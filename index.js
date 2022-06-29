@@ -7,19 +7,20 @@ const modeButton = document.getElementById('switch-mode');
 // const allowSoundButton = document.getElementById('allow-sound');
 
 let rects = []; // this is the array that will hold the rectangles
-
 const TIMEOUT = 1; // this is the time in milliseconds between each swap
+const RAND_MULTIPLIER = 1; // the multiplier at which the values will exponentially increase
 
 function generate(count) {
     clearTimeout(sortState.timeout);
     sortState.timeout = null;
 
     for (let i = 1; i <= count; i++) {
+        const lastElementValue = rects[rects.length - 1]?.value ?? 0;
         const rect = document.createElement('div');
         rect.classList.add('rect');
         rect.style.height = `${i / count * 100}%`;
     
-        rects.push({ element: rect, value: i });
+        rects.push({ element: rect, value: lastElementValue + Math.random() * RAND_MULTIPLIER });
         main.appendChild(rect);
     }
 }
