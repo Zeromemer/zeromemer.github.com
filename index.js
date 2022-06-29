@@ -82,7 +82,7 @@ function runSwapper(generator) {
         sortState.timeout = null;
     }
 
-    sortState.timeout = setTimeout(() => {
+    sortState.timeout = setTimeout(function genLoop() {
         // remove all the "swap-rect" classes from all the rectangles
         rects.forEach(rect => {
             rect.element.classList.remove('swap-rect');
@@ -97,7 +97,8 @@ function runSwapper(generator) {
         }
 
         if (toSwap.value[0] === toSwap.value[1]) {
-            console.log('same');
+            genLoop();
+            return;
         }
 
         // set both rectangles to have the "swap-rect" class
@@ -211,9 +212,7 @@ const algs = {
                     j--;
                 }
                 if (i <= j) {
-                    if (i !== j) {
-                        yield [i, j];
-                    }
+                    yield [i, j];
 
                     i++;
                     j--;
