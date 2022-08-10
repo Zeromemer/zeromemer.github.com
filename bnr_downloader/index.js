@@ -12,6 +12,9 @@ async function getMp3SourcesFromUrl(url) {
         .then(text => {
             const mp3Urls = text.match(mp3UrlRegex);
             return mp3Urls;
+        }).catch(err => {
+            results.innerHTML = `<p>${err}</p>`;
+            return [];
         });
 }
 
@@ -21,6 +24,7 @@ searchBtn.addEventListener('click', () => {
     getMp3SourcesFromUrl(url.value).then(mp3Urls => {
         if (mp3Urls === null) {
             results.innerHTML = 'No mp3 sources found :/';
+            return;
         }
         mp3Urls.forEach(mp3Url => {
             const a = document.createElement('a');
