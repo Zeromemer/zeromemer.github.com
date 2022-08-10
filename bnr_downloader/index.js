@@ -4,7 +4,7 @@ const results = document.getElementById('results');
 
 console.log(url, searchBtn, results);
 
-const mp3UrlRegex = /https:\/\/stream.bnr.bg\/storage\/.*.mp3/g;
+const mp3UrlRegex = /https:\/\/stream.bnr.bg\/storage\/.*\.mp3/g;
 
 async function getMp3SourcesFromUrl(url) {
     return await fetch(url)
