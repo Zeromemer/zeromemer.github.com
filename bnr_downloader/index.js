@@ -6,8 +6,8 @@ console.log(url, searchBtn, results);
 
 const mp3UrlRegex = /https:\/\/stream.bnr.bg\/storage\/.*\.mp3/g;
 
-async function getMp3SourcesFromUrl(url) {
-    return await fetch(url)
+function getMp3SourcesFromUrl(url) {
+    return fetch(url)
         .then(res => res.text())
         .then(text => {
             const mp3Urls = text.match(mp3UrlRegex);
