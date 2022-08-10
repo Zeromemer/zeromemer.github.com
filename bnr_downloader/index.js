@@ -19,7 +19,9 @@ searchBtn.addEventListener('click', () => {
     results.innerHTML = '';
     // put all sources into results as a list of anchors
     getMp3SourcesFromUrl(url.value).then(mp3Urls => {
-        console.log(mp3Urls);
+        if (mp3Urls === null) {
+            results.innerHTML = 'No mp3 sources found :/';
+        }
         mp3Urls.forEach(mp3Url => {
             const a = document.createElement('a');
             a.href = mp3Url;
