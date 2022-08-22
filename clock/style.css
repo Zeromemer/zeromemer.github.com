@@ -14,19 +14,3 @@ body {
     justify-content: center;
     color: hsl(218 10% 85%);
 }
-
-.fscbtn {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    background-color: #586070;
-    margin-right: 4vw;
-    margin-bottom: 4vh;
-    font-size: large;
-    height: 10%;
-    width: 10%;
-}
-
-.fscbtn:hover {
-    background-color: #4d5361;
-}
