@@ -1,4 +1,13 @@
 import tick from '../stuff/tick.js'
 const time = document.getElementById('time');
 
-tick(() => time.innerText = new Date().toLocaleString(), 1000);
+
+function pad(n) {
+    return String(n).padStart(2, '0');
+}
+
+tick(() => {
+    const date = new Date();
+    time.innerText = `${pad(date.getDate())}/${pad(date.getMonth())}/${pad(date.getFullYear())}, ` + 
+        `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+}, 1000);
