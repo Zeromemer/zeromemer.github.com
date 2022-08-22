@@ -1,0 +1,16 @@
+body {
+    font-family: monospace;
+    font-size: 9rem;
+    background: #282c34;
+    color: white;
+    text-align: center;
+    margin: 0%;
+}
+
+#time {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: hsl(218 10% 85%);
+}
