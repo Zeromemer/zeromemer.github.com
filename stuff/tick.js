@@ -1,5 +1,5 @@
 /**
- * Better setTimeout
+ * Better setInterval
  * 
  * @param {() => void} callback
  * @param {number} delay
