@@ -1,4 +1,4 @@
-import tick from '../stuff/tick.js'
+import tick from '../stuff/tick.js';
 const time = document.getElementById('time');
 
 function pad(n) {
