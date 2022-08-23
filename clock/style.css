@@ -1,7 +1,7 @@
 body {
     font-family: monospace;
     font-size: 8vw;
-    color: white;
+    background: #282c34;
     text-align: center;
     margin: 0%;
 }
@@ -9,7 +9,6 @@ body {
 #time {
     height: 100vh;
     display: flex;
-    background: #282c34;
     align-items: center;
     justify-content: center;
     color: hsl(218 10% 85%);
