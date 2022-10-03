@@ -7,6 +7,6 @@ function pad(n) {
 
 tick(() => {
     const date = new Date();
-    time.innerText = `${pad(date.getDate())}/${pad(date.getMonth())}/${pad(date.getFullYear())}, ` + 
+    time.innerText = `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${pad(date.getFullYear())}, ` + 
         `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
 }, 1000);
