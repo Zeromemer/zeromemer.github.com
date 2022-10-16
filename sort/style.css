@@ -20,8 +20,8 @@ body {
 	background-color: #00c3ff;
 }
 
-.main-mod .rect {
-	border-left: 1px solid #ffffff;
+.main-mod {
+	gap: 1px;
 }
 
 .swap-rect {
