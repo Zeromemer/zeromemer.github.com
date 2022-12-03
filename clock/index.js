@@ -36,6 +36,13 @@ const phrases = [
     [ 'start', function() { ticker.paused = false; } ],
     [ 'stop', function() { ticker.paused = true; } ],
     [
+        'unedit',
+        function() {
+            ticker.paused = false;
+            time.contentEditable = 'false';
+        }
+    ],
+    [
         'edit',
         function() {
             ticker.paused = true;
