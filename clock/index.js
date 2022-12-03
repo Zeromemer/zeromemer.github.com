@@ -39,7 +39,7 @@ const phrases = [
         'edit',
         function() {
             ticker.paused = true;
-            document.body.contentEditable = 'true';
+            time.contentEditable = 'true';
         }
     ]
 ];
