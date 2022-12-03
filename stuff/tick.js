@@ -10,7 +10,7 @@ export default function tick(callback, delay) {
 
     function inner() {
         if (!ticker.paused) {
-            callback();
+            ticker.callback();
         }
         const now = Date.now();
         ticker.timeoutId = setTimeout(() => inner(), (Math.round(now / ticker.delay) * ticker.delay + ticker.delay) - now);
