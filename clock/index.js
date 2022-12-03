@@ -35,6 +35,13 @@ function toggleFullScreen() {
 const phrases = [
     [ 'start', function() { ticker.paused = false; } ],
     [ 'stop', function() { ticker.paused = true; } ],
+    [
+        'edit',
+        function() {
+            ticker.paused = true;
+            document.body.contentEditable = 'true';
+        }
+    ]
 ];
 const progressMap = new Map(phrases.map(phrase => [phrase[0], 0]));
 
