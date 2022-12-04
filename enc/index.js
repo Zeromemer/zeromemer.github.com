@@ -58,7 +58,10 @@ showKeyButton.addEventListener('click', async () => {
 toEncryptInput.addEventListener('input', async () => {
     if (key ===  null || iv === null) return;
 
-    if (toEncryptInput.value === "") return;
+    if (toEncryptInput.value === "") {
+        encrypted.innerText = '';
+        return;
+    };
 
     try {
         const result = await encrypt(key, iv, Data.fromString(toEncryptInput.value));
