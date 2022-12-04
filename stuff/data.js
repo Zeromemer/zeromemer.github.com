@@ -30,7 +30,7 @@ export default class Data {
 
     /** @param {string} string */
     static fromHex(string) {
-        return new Data(new Uint8Array(string.match(/.{1,2}/g).map(s => parseInt(s, 16))));
+        return new Data(new Uint8Array(string.match(/[0-9A-Za-z]{1,2}/g).map(s => parseInt(s, 16))));
     }
 
     get uint8Array() {
