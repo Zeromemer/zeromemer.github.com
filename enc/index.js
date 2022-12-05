@@ -67,20 +67,22 @@ toEncryptInput.addEventListener('input', async () => {
         const result = await encrypt(key, iv, Data.fromString(toEncryptInput.value));
         encrypted.innerText = result.hex;
     } catch (error) {
-        alert(`Decryption failed: ${error.msg}`);
+        console.error(error);
+        alert(`Encryption failed: ${error}`);
     }
 });
 
 toDecryptInput.addEventListener('change', async () => {
     if (key ===  null || iv === null) return;
-
+    
     if (toDecryptInput.value === "") return;
-
+    
     try {
         const result = await decrypt(key, iv, Data.fromHex(toDecryptInput.value));
         console.log(result.string);
         decrypted.innerText = result.string;
     } catch (error) {
-        alert(`Decryption failed: ${error.msg || "Incorect key/input"}`);
+        console.error(error);
+        alert(`Decryption failed: ${error || "Incorect key/input"}`);
     }
 });
