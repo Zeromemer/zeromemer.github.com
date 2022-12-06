@@ -75,4 +75,4 @@ document.addEventListener('keydown', (e) => {
             progressMap.forEach((v, k) => progressMap.set(k, 0));
         }
     });
-})
+});
