@@ -20,14 +20,14 @@ keyGenButton.addEventListener('click', async () => {
 });
 
 showKeyButton.addEventListener('click', async () => {
-    if (!key.ready) return;
+    if (!key.isReady()) return;
 
     const keyData = Data.fromArrayBuffer(await crypto.subtle.exportKey('raw', key.key));
     prompt(`key and iv: `, `${keyData.hex} ${key.iv.hex}`);
 })
 
 toEncryptInput.addEventListener('input', async () => {
-    if (!key.ready) return;
+    if (!key.isReady()) return;
 
     if (toEncryptInput.value === "") {
         encrypted.innerText = '';
@@ -44,7 +44,7 @@ toEncryptInput.addEventListener('input', async () => {
 });
 
 toDecryptInput.addEventListener('change', async () => {
-    if (!key.ready) return;
+    if (!key.isReady()) return;
     
     if (toDecryptInput.value === "") return;
     

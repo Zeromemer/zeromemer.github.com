@@ -1,14 +1,13 @@
 import Data from "./data.js";
 
+/**
+ * @template {boolean} Ready
+ */
 export class Key {
-    /** @type {CryptoKey | null} */
+    /** @type {Ready extends true ? CryptoKey : null} */
     #key = null;
-    /** @type {Data | null} */
+    /** @type {Ready extends true ? Data : null} */
     #iv = null;
-
-    get ready() {
-        return this.#key !== null && this.#iv !== null;
-    }
 
     get key() {
         return this.#key;
@@ -16,6 +15,13 @@ export class Key {
 
     get iv() {
         return this.#iv;
+    }
+
+    /**
+     * @returns {this is Key<true>}
+     */
+    isReady() {
+        return this.#key !== null && this.#iv !== null;
     }
 
     /** 
@@ -58,7 +64,7 @@ export class Key {
 }
 
 /**
- * @param {Key} key
+ * @param {Key<true>} key
  * @param {Data} data
  */
 export async function encrypt(key, data) {
@@ -66,7 +72,7 @@ export async function encrypt(key, data) {
 }
 
 /**
- * @param {Key} key
+ * @param {Key<true>} key
  * @param {Data} data
  */
 export async function decrypt(key, data) {
