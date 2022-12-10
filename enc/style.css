@@ -12,4 +12,7 @@ body {
     font-size: 175%;
     margin: 0;
     overflow-wrap: anywhere;
+    color-scheme: dark;
+    background: #282c34;
+    color: hsl(218 10% 85%);
 }
