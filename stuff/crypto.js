@@ -39,7 +39,7 @@ export class Key {
      * @param {Data} salt
      */
     async initKey(passData, salt) {
-        const base = await crypto.subtle.importKey("raw", passData.uint8Array, { name: "PBKDF2" }, false, ["deriveKey"]);
+        const base = await crypto.subtle.importKey("raw", passData.uint8Array, { name: "PBKDF2" }, false, ["deriveKey", "deriveBits"]);
         this.#key = await crypto.subtle.deriveKey(
             { name: 'PBKDF2', salt: salt.uint8Array, iterations: 200_000, hash: 'SHA-256' },
             base,
