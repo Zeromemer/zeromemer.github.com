@@ -7,6 +7,16 @@ input {
     font-size: 75%;
 }
 
+.output {
+    display: inline-block;
+    max-width: 85vw;
+    font-family: monospace;
+}
+
+label {
+    display: block;
+}
+
 body {
     text-align: center;
     font-size: 175%;
