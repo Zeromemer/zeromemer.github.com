@@ -45,7 +45,10 @@ toEncryptInput.addEventListener('input', async () => {
 toDecryptInput.addEventListener('change', async () => {
     if (!key.isReady()) return;
     
-    if (toDecryptInput.value === "") return;
+    if (toDecryptInput.value === "") {
+        decrypted.innerText = "";
+        return;
+    }
     
     try {
         const result = await decrypt(key, Data.fromBase64(toDecryptInput.value));
