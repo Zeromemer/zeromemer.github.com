@@ -1,3 +1,5 @@
+import { fromBase64, toBase64 } from './base64.js';
+
 /** Binary data wraper class */
 export default class Data {
     #data;
@@ -33,6 +35,11 @@ export default class Data {
         return new Data(new Uint8Array(string.match(/[0-9A-Za-z]{2}/g).map(s => parseInt(s, 16))));
     }
 
+    /** @param {string} string */
+    static fromBase64(string) {
+        return new Data(fromBase64(string));
+    }
+
     get uint8Array() {
         return this.#data;
     }
@@ -47,5 +54,9 @@ export default class Data {
     
     get hex() {
         return Array.from(this.#data).map(i => i.toString(16).padStart(2, '0')).join('');
+    }
+
+    get base64() {
+        return toBase64(this.#data);
     }
 }
