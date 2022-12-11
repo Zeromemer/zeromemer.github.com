@@ -35,7 +35,7 @@ toEncryptInput.addEventListener('input', async () => {
 
     try {
         const result = await encrypt(key, Data.fromString(toEncryptInput.value));
-        encrypted.innerText = result.hex;
+        encrypted.innerText = result.base64;
     } catch (error) {
         console.error(error);
         alert(`Encryption failed: ${error}`);
@@ -48,7 +48,7 @@ toDecryptInput.addEventListener('change', async () => {
     if (toDecryptInput.value === "") return;
     
     try {
-        const result = await decrypt(key, Data.fromHex(toDecryptInput.value));
+        const result = await decrypt(key, Data.fromBase64(toDecryptInput.value));
         decrypted.innerText = result.string;
     } catch (error) {
         console.error(error);
