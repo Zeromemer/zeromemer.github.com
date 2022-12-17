@@ -15,6 +15,7 @@ const key = new Key();
 
 keyGenButton.addEventListener('click', async () => {
     const password = passwordInput.value;
+    passwordInput.value = '';
     key.init(password, salt);
 });
 
