@@ -52,6 +52,7 @@ const phrases = [
         function() {
             ticker.paused = false;
             time.contentEditable = 'false';
+            date.contentEditable = 'false';
         }
     ],
     [
@@ -59,13 +60,20 @@ const phrases = [
         function() {
             ticker.paused = true;
             time.contentEditable = 'true';
+            date.contentEditable = 'true';
         }
     ]
 ];
 const progressMap = new Map(phrases.map(phrase => [phrase[0], 0]));
 
 document.addEventListener('keydown', (e) => {
-    const key = e.key.toLowerCase();
+    const code = e.code;
+
+    if (!code.startsWith('Key')) {
+        return;
+    }
+
+    const key = code.slice(3).toLocaleLowerCase();
 
     if (key.toLowerCase() === 'f') {
         if (!ticker.paused) {
