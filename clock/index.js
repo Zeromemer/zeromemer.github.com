@@ -1,14 +1,26 @@
 import tick from '../stuff/tick.js';
+
+const userLocale =
+  navigator.languages && navigator.languages.length
+    ? navigator.languages[0]
+    : navigator.language;
+
 const time = document.getElementById('time');
+const date = document.getElementById('date');
 
 function pad(n) {
     return String(n).padStart(2, '0');
 }
 
 const ticker = tick(() => {
-    const date = new Date();
-    time.innerText = `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${pad(date.getFullYear())}, ` + 
-        `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+    const datetime = new Date();
+    time.innerText = `${pad(datetime.getHours())}:${pad(datetime.getMinutes())}:${pad(datetime.getSeconds())}`;
+    date.innerText = datetime.toLocaleDateString(userLocale, {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    });
 }, 1000);
 
 function toggleFullScreen() {
