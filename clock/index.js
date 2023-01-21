@@ -66,6 +66,14 @@ const phrases = [
 ];
 const progressMap = new Map(phrases.map(phrase => [phrase[0], 0]));
 
+const letters = {
+    'f': function() {
+        if (!ticker.paused) {
+            toggleFullScreen();
+        }
+    }
+};
+
 document.addEventListener('keydown', (e) => {
     const code = e.code;
 
@@ -73,12 +81,12 @@ document.addEventListener('keydown', (e) => {
         return;
     }
 
-    const key = code.slice(3).toLocaleLowerCase();
+    const key = code.slice(3).toLowerCase();
 
-    if (key.toLowerCase() === 'f') {
-        if (!ticker.paused) {
-            toggleFullScreen();
-        }
+    const letterHandler = letters[key];
+    if (letterHandler) {
+        letterHandler();
+        return;
     }
 
     phrases.forEach(([phrase, handler]) => {
