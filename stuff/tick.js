@@ -13,7 +13,7 @@ export default function tick(callback, delay) {
             ticker.callback();
         }
         const now = Date.now();
-        ticker.timeoutId = setTimeout(() => inner(), (Math.floor(now / ticker.delay) * ticker.delay + ticker.delay) - now);
+        ticker.timeoutId = setTimeout(inner, (Math.floor(now / ticker.delay) * ticker.delay + ticker.delay) - now);
     }
     inner();
 
