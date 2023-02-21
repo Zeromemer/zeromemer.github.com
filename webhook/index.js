@@ -12,18 +12,23 @@ const sendButton = document.getElementById('send');
 
 const key = new Key();
 
-unlockButton.addEventListener('click', () => {
+unlockButton.addEventListener('click', async () => {
     key.init(password.value, salt);
+
+    try {
+        webhook = baseWebhookURL + (await decrypt(key, Data.fromBase64(webhookEncrypted))).string;
+    } catch (error) {
+        console.error(error);
+        alert(`Decryption failed: ${error || "Incorect key/input"}`);
+        return;
+    }
 });
 
 let webhook = null;
 sendButton.addEventListener('click', async () => {
     if (webhook === null) {
-        if (key.isReady()) {
-            webhook = baseWebhookURL + (await decrypt(key, Data.fromBase64(webhookEncrypted))).string;
-        } else {
-            return;
-        }
+        alert("You haven't unlocked the webhook DINGUS");
+        return;
     }
 
     const body = {
