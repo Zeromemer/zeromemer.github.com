@@ -50,9 +50,14 @@ sendButton.addEventListener('click', async () => {
         },
         body: JSON.stringify(body)
     }).then(async res => {
-        const data = res.status === 200 ? await res.json() : null;
+        if (res.status !== 200) {
+            alert(`Discord returned with a status code of ${res.status}, you fucked up`);
+            return;
+        }
+
+        const data = await res.json();
         
-        response.innerText += `${data.timestamp} ${res.status} ${res.status === 200 ? data.id : ''}\n`;
+        response.innerText += `${data.timestamp} ${data.id}\n`;
 
         console.log(data);
     });
