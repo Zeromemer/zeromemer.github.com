@@ -2,6 +2,7 @@ import { Key, decrypt } from '../stuff/crypto.js';
 import Data from '../stuff/data.js';
 const salt = Data.fromString('This can be anything, and I have chosen for it to be this sentence. (amogus)');
 const baseWebhookURL = 'https://discord.com/api/webhooks/';
+const webhookParams = '?wait=true'
 const webhookEncrypted = 'jQXKYuNvK4yaXup13VRx1QL67MiTT5HUDQcWX6uvr5tHFIFa2IkPWUTM0AnFWYbSvTvhSVCmetAMUgjlvLfzL2jzW+RievOKecKykCSGiTAXz8eDEMYM/MxE/DlhNbv6';
 
 const password = document.getElementById('password');
@@ -17,7 +18,7 @@ unlockButton.addEventListener('click', async () => {
     password.value = '';
 
     try {
-        webhook = baseWebhookURL + (await decrypt(key, Data.fromBase64(webhookEncrypted))).string;
+        webhook = baseWebhookURL + (await decrypt(key, Data.fromBase64(webhookEncrypted))).string + webhookParams;
     } catch (error) {
         console.error(error);
         alert(`Decryption failed: ${error || "Incorect key/input"}`);
@@ -40,8 +41,6 @@ sendButton.addEventListener('click', async () => {
             everyone: false
         }
     };
-
-    console.log(body);
     
     const date = new Date();
     fetch(webhook, {
@@ -50,11 +49,11 @@ sendButton.addEventListener('click', async () => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(body)
-    }).then(res => {
-        const hours = date.getHours().toString().padStart(2, "0");
-        const minutes = date.getMinutes().toString().padStart(2, "0");
-        const seconds = date.getSeconds().toString().padStart(2, "0");
+    }).then(async res => {
+        const data = res.status === 200 ? await res.json() : null;
         
-        response.innerText += `${hours}:${minutes}:${seconds} ${res.status}\n`;
+        response.innerText += `${data.timestamp} ${res.status} ${res.status === 200 ? data.id : ''}\n`;
+
+        console.log(data);
     });
 });
