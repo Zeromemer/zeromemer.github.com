@@ -13,7 +13,8 @@ const sendButton = document.getElementById('send');
 const key = new Key();
 
 unlockButton.addEventListener('click', async () => {
-    key.init(password.value, salt);
+    await key.init(password.value, salt);
+    password.value = '';
 
     try {
         webhook = baseWebhookURL + (await decrypt(key, Data.fromBase64(webhookEncrypted))).string;
