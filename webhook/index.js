@@ -11,6 +11,7 @@ const response = document.getElementById('response');
 const unlockButton = document.getElementById('unlock');
 const sendButton = document.getElementById('send');
 const fileInput = document.getElementById('files');
+const fileInputReset = document.getElementById('reset-files');
 
 const key = new Key();
 
@@ -27,9 +28,13 @@ unlockButton.addEventListener('click', async () => {
     }
 });
 
-window.addEventListener('paste', e => {
+addEventListener('paste', e => {
     fileInput.files = e.clipboardData.files;
-});  
+});
+
+fileInputReset.addEventListener('click', () => {
+    fileInput.value = '';
+})
 
 let webhook = null;
 sendButton.addEventListener('click', async () => {
