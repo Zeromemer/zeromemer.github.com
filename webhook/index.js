@@ -10,6 +10,7 @@ const text = document.getElementById('text');
 const response = document.getElementById('response');
 const unlockButton = document.getElementById('unlock');
 const sendButton = document.getElementById('send');
+const fileInput = document.getElementById('files');
 
 const key = new Key();
 
@@ -26,6 +27,10 @@ unlockButton.addEventListener('click', async () => {
     }
 });
 
+window.addEventListener('paste', e => {
+    fileInput.files = e.clipboardData.files;
+});  
+
 let webhook = null;
 sendButton.addEventListener('click', async () => {
     if (webhook === null) {
@@ -33,23 +38,32 @@ sendButton.addEventListener('click', async () => {
         return;
     }
 
-    const body = {
+    const message = JSON.stringify({
         content: text.value,
         allowed_mentions: {
             users: [],
             roles: [],
             everyone: false
         }
-    };
-    
-    const date = new Date();
-    fetch(webhook, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-    }).then(async res => {
+    });
+
+    const request = { method: "POST" };
+    if (fileInput.files.length) {
+        const formData = new FormData();
+        formData.append('payload_json', message);
+
+        for (let i = 0; i < fileInput.files.length; i++) {
+            formData.append(`files[${i}]`, fileInput.files[i]);
+        }
+
+        request.body = formData;
+        fileInput.value = '';
+    } else {
+        request.headers = { "Content-Type": "application/json" };
+        request.body = message;
+    }
+
+    fetch(webhook, request).then(async res => {
         if (res.status !== 200) {
             alert(`Discord returned with a status code of ${res.status}, you fucked up`);
             return;
