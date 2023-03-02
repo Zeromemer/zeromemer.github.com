@@ -69,15 +69,15 @@ sendButton.addEventListener('click', async () => {
     }
 
     fetch(webhook, request).then(async res => {
+        const data = await res.json();
+        console.log(data);
+        
         if (res.status !== 200) {
-            alert(`Discord returned with a status code of ${res.status}, you fucked up`);
+            alert(`${res.status}: ${data.message ?? data.content}`);
+
             return;
         }
-
-        const data = await res.json();
         
         response.innerText += `${data.timestamp} ${data.id}\n`;
-
-        console.log(data);
     });
 });
