@@ -1,0 +1,20 @@
+body {
+	text-align: center;
+	font-family: monospace;
+    font-size: 10vw;
+}
+
+input {
+    width: 12vw;
+    height: 10vw;
+    font-size: 10vw;
+    text-align: center;
+}
+
+
+.main {
+	height: 100vh;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
