@@ -39,8 +39,8 @@ class Body {
 }
 
 const bodies = [
-    new Body(50, 100, [canvas.width / 2 - 100, canvas.height / 2], [0, .01]),
-    new Body(1, 5, [canvas.width / 2 + 70, canvas.height / 2], [0, -1.5])
+    new Body(50, 100, [canvas.width / 2 - 300, canvas.height / 2], [0, .5]),
+    new Body(50, 100, [canvas.width / 2 + 300, canvas.height / 2], [0, -0.5])
 ];
 
 setInterval(() => {
@@ -54,12 +54,9 @@ setInterval(() => {
         } 
     }
 
-    console.log('---- stuff ----');
     for (const body of bodies) {
         body.position[0] += body.velocity[0];
         body.position[1] += body.velocity[1];
-        console.log(body.position);
         drawSphere(ctx, body.position[0], body.position[1], body.radius);
     }
-    console.log('---- stuff ----');
 }, 50);
