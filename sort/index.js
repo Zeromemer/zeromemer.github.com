@@ -20,7 +20,7 @@ function generate(count) {
         rect.classList.add('rect');
         rect.style.height = `${i / count * 100}%`;
     
-        rects.push({ element: rect, value: lastElementValue + Math.random() * RAND_MULTIPLIER });
+        rects.push({ element: rect, value: lastElementValue + Math.floor(Math.random() * RAND_MULTIPLIER) + 1 });
         main.appendChild(rect);
     }
 }
