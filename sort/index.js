@@ -8,7 +8,7 @@ const modeButton = document.getElementById('switch-mode');
 
 let rects = []; // this is the array that will hold the rectangles
 const TIMEOUT = 1; // this is the time in milliseconds between each swap
-const RAND_MULTIPLIER = 1; // the multiplier at which the values will exponentially increase
+const RAND_MULTIPLIER = 5; // the multiplier at which the values will exponentially increase
 
 function generate(count) {
     clearTimeout(sortState.timeout);
