@@ -1,158 +1,80 @@
-const main = document.getElementById('main'); // this is the main container, where the list will be rendered
+const canvas = document.getElementById('main');
+const ctx = canvas.getContext("2d");
 const generateButton = document.getElementById('generate');
 const countElement = document.getElementById('count');
 const sortButton = document.getElementById('sort');
 const stopButton = document.getElementById('stop-sort');
 const modeButton = document.getElementById('switch-mode');
-// const allowSoundButton = document.getElementById('allow-sound');
+const sortSelect = document.getElementById('alg');
 
-let rects = []; // this is the array that will hold the rectangles
-const TIMEOUT = 1; // this is the time in milliseconds between each swap
-const RAND_MULTIPLIER = 5; // the multiplier at which the values will exponentially increase
+let values = [];
+let count = null;
 
-function generate(count) {
-    clearTimeout(sortState.timeout);
-    sortState.timeout = null;
-
-    for (let i = 1; i <= count; i++) {
-        const lastElementValue = rects[rects.length - 1]?.value ?? 0;
-        const rect = document.createElement('div');
-        rect.classList.add('rect');
-        rect.style.height = `${i / count * 100}%`;
-    
-        rects.push({ element: rect, value: lastElementValue + Math.floor(Math.random() * RAND_MULTIPLIER) + 1 });
-        main.appendChild(rect);
-    }
+function draw(index) {
+    ctx.clearRect(index, 0, 1, count);
+    ctx.fillRect(index, count, 1, -values[index]);
 }
 
-// swaps between the two modes
-modeButton.addEventListener('click', () => main.classList.contains('main-mod') ? main.classList.remove('main-mod') : main.classList.add('main-mod'));
+function swap(a, b) {
+    if (a == b) return;
+    
+    values[a] ^= values[b];
+    values[b] ^= values[a];
+    values[a] ^= values[b];
+
+    draw(a);
+    draw(b);
+}
 
 generateButton.addEventListener('click', () => {
-    // delete all the rectangles in main
-    while (main.firstChild) {
-        main.removeChild(main.firstChild);
-    }
-    rects = [];
-
-    // generate new rectangles
-    const count = parseInt(countElement.value);
-    generate(count);
+    values = [];
+    count = parseInt(countElement.value);
+    canvas.width = count;
+    canvas.height = count;
     
-    console.log(rects);
+    ctx.fillStyle = '#00c3ff';
+    for (let i = 0; i < count; i++) {
+        values.push(i + 1);
+        draw(i);
+    }
 });
 
-const swapNodes = function (nodeA, nodeB) {
-    const parentA = nodeA.parentNode;
-    const siblingA = nodeA.nextSibling === nodeB ? nodeA : nodeA.nextSibling;
+let requestedFrame = null;
 
-    // Move `nodeA` to before the `nodeB`
-    nodeB.parentNode.insertBefore(nodeA, nodeB);
+sortButton.addEventListener('click', () => {
+    const sort = sorts[sortSelect.value]();
+    
+    requestedFrame = requestAnimationFrame(function genLoop() {
+        const toSwap = sort.next();
+        if (toSwap.done) return;
+        swap(...toSwap.value);
 
-    // Move `nodeB` to before the sibling of `nodeA`
-    parentA.insertBefore(nodeB, siblingA);
-};
-
-async function swap(id1, id2) {
-    const temp = rects[id1];
-    rects[id1] = rects[id2];
-    rects[id2] = temp;
-
-    swapNodes(rects[id1].element, rects[id2].element);
-}
-
-const sortState = {
-    running: false,
-    timeout: null,
-    startTime: null,
-    endTime: null,
-}
-
-stopButton.addEventListener('click', () => {
-    clearTimeout(sortState.timeout);
-    sortState.timeout = null;
-    rects.forEach(rect => {
-        rect.element.classList.remove('swap-rect');
+        requestedFrame = requestAnimationFrame(genLoop);
     });
 });
 
-function runSwapper(generator) {
-    if (sortState.timeout) {
-        clearTimeout(sortState.timeout);
-        sortState.timeout = null;
-    }
-
-    sortState.timeout = setTimeout(function genLoop() {
-        // remove all the "swap-rect" classes from all the rectangles
-        rects.forEach(rect => {
-            rect.element.classList.remove('swap-rect');
-        });
-        
-        const toSwap = generator.next();
-        if (toSwap.done) {
-            end = performance.now();
-            const date = new Date();
-            console.log(`${date.toLocaleString()}: ${end - sortState.startTime}`);
-            return;
-        }
-
-        if (toSwap.value[0] === toSwap.value[1]) {
-            genLoop();
-            return;
-        }
-
-        // set both rectangles to have the "swap-rect" class
-        rects[toSwap.value[0]]?.element.classList.add('swap-rect');
-        rects[toSwap.value[1]]?.element.classList.add('swap-rect');
-        swap(toSwap.value[0], toSwap.value[1]);
-        runSwapper(generator);
-    }, TIMEOUT);
-}
-
-sortButton.addEventListener('click', () => {
-    sortState.startTime = performance.now();
-    const alg = algs[document.getElementById('alg').value];
-    if (!alg) {
-        throw new Error('Invalid algorithm');
-    }
-
-    runSwapper(alg());
-});
-
-// allowSoundButton.addEventListener('click', () => {
-//     context.resume();
-// });
-
-
-const algs = {
-    // each function in this object returns a generator that will yield each time a swap is performed
-
-
-
+const sorts = {
     "shuffle": function* shuffle() {
-        for (let i = 0; i < rects.length; i++) {
-            // chose a random element rand,
-            // so that rand is in the set [i, rectts.length)
-            const rand = Math.floor(Math.random() * (rects.length - i)) + i;
+        for (let i = 0; i < count; i++) {
+            const rand = Math.floor(Math.random() * (count - i)) + i;
 
             yield [i, rand];
         }
     },
     "invert": function* invert() {
-        const half = Math.floor(rects.length / 2);
+        const half = Math.floor(count / 2);
 
         for (let i = 0; i < half; i++) {
-            yield [i, rects.length - i - 1];
+            yield [i, count - i - 1];
         }
     },
     "bogo": function* bogo() {
         let done = false;
 
         while (!done) {
-            // check if we're already done
             done = true;
-            for (let i = 0; i < rects.length - 1; i++) {
-                if (rects[i].value > rects[i + 1].value) {
+            for (let i = 0; i < count - 1; i++) {
+                if (values[i] > values[i + 1].value) {
                     done = false;
                     break;
                 }
@@ -164,28 +86,28 @@ const algs = {
         }
     },
     "bubble": function* bubbleSort() {
-        for (let i = 0; i < rects.length; i++) {
-            for (let j = 0; j < rects.length - i - 1; j++) {
-                if (rects[j].value > rects[j + 1].value) {
+        for (let i = 0; i < count; i++) {
+            for (let j = 0; j < count - i - 1; j++) {
+                if (values[j] > values[j + 1]) {
                     yield [j, j + 1];
                 }
             }
         }
     },
     "insertion": function* insertionSort() {
-        for (let i = 1; i < rects.length; i++) {
+        for (let i = 1; i < count; i++) {
             let j = i;
-            while (j > 0 && rects[j - 1].value > rects[j].value) {
+            while (j > 0 && values[j - 1] > values[j]) {
                 yield [j, j - 1];
                 j--;
             }
         }
     },
     "selection": function* selectionSort() {
-        for (let i = 0; i < rects.length; i++) {
+        for (let i = 0; i < count; i++) {
             let min = i;
-            for (let j = i + 1; j < rects.length; j++) {
-                if (rects[j].value < rects[min].value) {
+            for (let j = i + 1; j < count; j++) {
+                if (values[j] < values[min]) {
                     min = j;
                 }
             }
@@ -193,22 +115,22 @@ const algs = {
         }
     },
     "quick": function* quickSort() {
-        yield* quickSortHelper(0, rects.length - 1);
+        yield* quickSortHelper(0, count - 1);
 
         function* quickSortHelper(left, right) {
             if (left >= right) {
                 return;
             }
 
-            const pivot = rects[Math.floor((left + right) / 2)].value;
+            const pivot = values[Math.floor((left + right) / 2)];
             let i = left;
             let j = right;
 
             while (i <= j) {
-                while (rects[i].value < pivot) {
+                while (values[i] < pivot) {
                     i++;
                 }
-                while (rects[j].value > pivot) {
+                while (values[j] > pivot) {
                     j--;
                 }
                 if (i <= j) {
@@ -223,4 +145,4 @@ const algs = {
             yield* quickSortHelper(i, right);
         }
     }
-}
+};

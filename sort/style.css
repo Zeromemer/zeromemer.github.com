@@ -3,27 +3,9 @@ body {
 }
 
 #main {
-	display: flex;
-	flex-direction: row;
 	height: 77vh;
 	width: 100%;
 	padding-top: 15px;
 	padding-bottom: 15px;
-	flex-grow: 1;
-	animation: none;
-}
-
-.rect {
-	width: auto;
-	flex: 1;
-	margin-top: auto;
-	background-color: #00c3ff;
-}
-
-.main-mod {
-	gap: 1px;
-}
-
-.swap-rect {
-	background: red;
+	image-rendering: pixelated;
 }
