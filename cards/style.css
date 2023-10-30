@@ -1,0 +1,16 @@
+body {
+    font-size: 7vw;
+    text-align: center;
+    margin: 0;
+}
+
+button {
+    font-size: 3vw;
+}
+
+main {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

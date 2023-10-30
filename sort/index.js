@@ -7,6 +7,9 @@ const stopButton = document.getElementById('stop-sort');
 const modeButton = document.getElementById('switch-mode');
 const sortSelect = document.getElementById('alg');
 
+const normalColor = '#00c3ff';
+const swapColor = '#ff0000';
+
 let values = [];
 let count = null;
 
@@ -27,12 +30,13 @@ function swap(a, b) {
 }
 
 generateButton.addEventListener('click', () => {
+    stopSort();
     values = [];
     count = parseInt(countElement.value);
     canvas.width = count;
     canvas.height = count;
     
-    ctx.fillStyle = '#00c3ff';
+    ctx.fillStyle = normalColor;
     for (let i = 0; i < count; i++) {
         values.push(i + 1);
         draw(i);
@@ -41,17 +45,41 @@ generateButton.addEventListener('click', () => {
 
 let requestedFrame = null;
 
+function stopSort() {
+    if (requestedFrame !== null) cancelAnimationFrame(requestedFrame);
+    requestedFrame = null;
+    ctx.fillStyle = normalColor;
+    for (let i = 0; i < count; i++) {
+        values.push(i + 1);
+        draw(i);
+    }
+}
+
 sortButton.addEventListener('click', () => {
+    stopSort();
     const sort = sorts[sortSelect.value]();
+    let lastSwapped = [null, null];
     
     requestedFrame = requestAnimationFrame(function genLoop() {
         const toSwap = sort.next();
-        if (toSwap.done) return;
-        swap(...toSwap.value);
+        if (toSwap.done) {
+            console.log('sort done');
+            return;
+        }
+        ctx.fillStyle = swapColor;
+        swap(toSwap.value[0], toSwap.value[1]);
+        ctx.fillStyle = normalColor;
+        if (lastSwapped[0] !== null && lastSwapped[1] !== null) {
+            draw(lastSwapped[0]);
+            draw(lastSwapped[1]);
+        }
+        lastSwapped = toSwap.value;
 
         requestedFrame = requestAnimationFrame(genLoop);
     });
 });
+
+stopButton.addEventListener('click', stopSort);
 
 const sorts = {
     "shuffle": function* shuffle() {
@@ -74,14 +102,14 @@ const sorts = {
         while (!done) {
             done = true;
             for (let i = 0; i < count - 1; i++) {
-                if (values[i] > values[i + 1].value) {
+                if (values[i] > values[i + 1]) {
                     done = false;
                     break;
                 }
             }
 
             if (!done) {
-                yield* algs.shuffle();
+                yield* this.shuffle();
             }
         }
     },
