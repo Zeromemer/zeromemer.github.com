@@ -58,18 +58,22 @@ function stopSort() {
 sortButton.addEventListener('click', () => {
     stopSort();
     const sort = sorts[sortSelect.value]();
-    let lastSwapped = [null, null];
+    let lastSwapped = null;
     
     requestedFrame = requestAnimationFrame(function genLoop() {
         const toSwap = sort.next();
         if (toSwap.done) {
-            console.log('sort done');
+            ctx.fillStyle = normalColor;
+            for (let i = 0; i < count; i++) {
+                values.push(i + 1);
+                draw(i);
+            }
             return;
         }
         ctx.fillStyle = swapColor;
         swap(toSwap.value[0], toSwap.value[1]);
         ctx.fillStyle = normalColor;
-        if (lastSwapped[0] !== null && lastSwapped[1] !== null) {
+        if (lastSwapped !== null) {
             draw(lastSwapped[0]);
             draw(lastSwapped[1]);
         }
