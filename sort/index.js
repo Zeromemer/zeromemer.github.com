@@ -64,9 +64,9 @@ sortButton.addEventListener('click', () => {
         const toSwap = sort.next();
         if (toSwap.done) {
             ctx.fillStyle = normalColor;
-            for (let i = 0; i < count; i++) {
-                values.push(i + 1);
-                draw(i);
+            if (lastSwapped !== null) {
+                draw(lastSwapped[0]);
+                draw(lastSwapped[1]);
             }
             return;
         }
