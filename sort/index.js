@@ -62,21 +62,17 @@ sortButton.addEventListener('click', () => {
     
     requestedFrame = requestAnimationFrame(function genLoop() {
         const toSwap = sort.next();
-        if (toSwap.done) {
-            ctx.fillStyle = normalColor;
-            if (lastSwapped !== null) {
-                draw(lastSwapped[0]);
-                draw(lastSwapped[1]);
-            }
-            return;
-        }
-        ctx.fillStyle = swapColor;
-        swap(toSwap.value[0], toSwap.value[1]);
         ctx.fillStyle = normalColor;
         if (lastSwapped !== null) {
             draw(lastSwapped[0]);
             draw(lastSwapped[1]);
         }
+        if (toSwap.done) {
+            ctx.fillStyle = normalColor;
+            return;
+        }
+        ctx.fillStyle = swapColor;
+        swap(toSwap.value[0], toSwap.value[1]);
         lastSwapped = toSwap.value;
 
         requestedFrame = requestAnimationFrame(genLoop);
