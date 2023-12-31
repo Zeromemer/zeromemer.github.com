@@ -22,7 +22,7 @@ const ticker = tick(() => {
     
     if (secondsTillNextYear <= 20) {
         date.style.display = 'none';
-        if (secondsTillNextYear <= 10) time.style.fontSize = `50vh`;
+        if (secondsTillNextYear <= 10) time.style.fontSize = `60vh`;
         time.innerText = secondsTillNextYear;
     } else if (secondsSinceLastYear < 12) {
         date.style.display = 'none';
