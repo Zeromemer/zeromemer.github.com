@@ -13,14 +13,32 @@ function pad(n) {
 }
 
 const ticker = tick(() => {
-    const datetime = new Date();
-    time.innerText = `${pad(datetime.getHours())}:${pad(datetime.getMinutes())}:${pad(datetime.getSeconds())}`;
-    date.innerText = datetime.toLocaleDateString(userLocale, {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-    });
+    const currentDate = new Date();
+
+    const endOfYear = new Date(currentDate.getFullYear() + 1, 0, 1, 0, 0, 0, 0);
+    const secondsTillNextYear = Math.round((endOfYear - currentDate) / 1000);
+    const startOfYear = new Date(currentDate.getFullYear(), 0, 1, 0, 0, 0, 0);
+    const secondsSinceLastYear = Math.round((currentDate - startOfYear) / 1000);
+    
+    if (secondsTillNextYear <= 20) {
+        date.style.display = 'none';
+        if (secondsTillNextYear <= 10) time.style.fontSize = `50vh`;
+        time.innerText = secondsTillNextYear;
+    } else if (secondsSinceLastYear < 12) {
+        date.style.display = 'none';
+        time.style.fontSize = '';
+        time.innerText = currentDate.getFullYear() + '!'.repeat(secondsSinceLastYear % 4);
+    } else {
+        date.style.display = '';
+        date.innerText = currentDate.toLocaleDateString(userLocale, {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+
+        time.innerText = `${pad(currentDate.getHours())}:${pad(currentDate.getMinutes())}:${pad(currentDate.getSeconds())}`;
+    }
 }, 1000);
 
 function toggleFullScreen() {
