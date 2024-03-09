@@ -9,10 +9,10 @@ export default function tick(callback, delay) {
     const ticker = { paused: false, callback, delay, timeoutId: NaN };
 
     function inner() {
+        const now = Date.now();
         if (!ticker.paused) {
             ticker.callback();
         }
-        const now = Date.now();
         ticker.timeoutId = setTimeout(inner, (Math.floor(now / ticker.delay) * ticker.delay + ticker.delay) - now);
     }
     inner();
