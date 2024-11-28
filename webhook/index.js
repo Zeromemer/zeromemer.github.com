@@ -7,9 +7,11 @@ const webhookEncrypted = 'jQXKYuNvK4yaXup13VRx1QL67MiTT5HUDQcWX6uvr5tHFIFa2IkPWU
 
 const password = document.getElementById('password');
 const text = document.getElementById('text');
+const messageId = document.getElementById('message-id');
 const response = document.getElementById('response');
 const unlockButton = document.getElementById('unlock');
 const sendButton = document.getElementById('send');
+const getButton = document.getElementById('get');
 const fileInput = document.getElementById('files');
 const fileInputReset = document.getElementById('reset-files');
 
@@ -20,7 +22,7 @@ unlockButton.addEventListener('click', async () => {
     password.value = '';
 
     try {
-        webhook = baseWebhookURL + (await decrypt(key, Data.fromBase64(webhookEncrypted))).string + webhookParams;
+        webhook = baseWebhookURL + (await decrypt(key, Data.fromBase64(webhookEncrypted))).string;
     } catch (error) {
         console.error(error);
         alert(`Decryption failed: ${error || "Incorect key/input"}`);
@@ -37,6 +39,7 @@ fileInputReset.addEventListener('click', () => {
 })
 
 let webhook = null;
+
 sendButton.addEventListener('click', async () => {
     if (webhook === null) {
         alert("You haven't unlocked the webhook DINGUS");
@@ -68,7 +71,7 @@ sendButton.addEventListener('click', async () => {
         request.body = message;
     }
 
-    fetch(webhook, request).then(async res => {
+    fetch(webhook + webhookParams, request).then(async res => {
         const data = await res.json();
         console.log(data);
         
@@ -81,3 +84,24 @@ sendButton.addEventListener('click', async () => {
         response.innerText += `${data.timestamp} ${data.id}\n`;
     });
 });
+
+getButton.addEventListener('click', async () => {
+    if (webhook === null) {
+        alert("You haven't unlocked the webhook DINGUS");
+        return;
+    }
+
+	const id = messageId.value;
+	const data = await (await fetch(webhook + "/messages/" + id)).json();
+	console.log(data);
+	
+	response.innerText += `${id}: ${data.content}\n`;
+	for (const i in data.attachments) {
+		const attachment = data.attachments[i];
+		
+		const anchor = document.createElement('a');
+        anchor.href = attachment.url;
+        anchor.innerText = `  ${attachment.filename}\n`;
+        response.appendChild(anchor);
+	}
+})
