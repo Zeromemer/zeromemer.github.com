@@ -40,7 +40,7 @@ class Body {
 
 const bodies = [
     new Body(50, 100, [canvas.width / 2 - 300, canvas.height / 2], [0, .5]),
-    new Body(50, 100, [canvas.width / 2 + 300, canvas.height / 2], [0, -0.5])
+    new Body(50, 100, [canvas.width / 2 + 300, canvas.height / 2], [0, -.5])
 ];
 
 setInterval(() => {
